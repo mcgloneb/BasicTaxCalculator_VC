@@ -1,7 +1,7 @@
 #root {
-  max-width: 1100px;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 2rem 1rem;
+  padding: 0 1rem 2rem;
 }
 
 .container {
@@ -21,9 +21,14 @@
 
 .stats {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(280px, 1fr));
   gap: 1rem;
   margin-bottom: 1rem;
+  align-items: stretch;
+}
+
+@media (min-width: 1600px) {
+  #root { max-width: 1440px; }
 }
 
 .stat-card {
@@ -31,6 +36,10 @@
   border: 1px solid var(--panel-border);
   border-radius: 8px;
   padding: 0.8rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 96px;
 }
 
 .stat-card .stat-label {
@@ -41,12 +50,18 @@
 .stat-card .stat-value {
   font-size: 1.3rem;
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  white-space: nowrap;
 }
 
 .stat-card .stat-sub {
   margin-top: 0.2rem;
   font-size: 0.85rem;
   color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  white-space: nowrap;
 }
 
 .stat-card.accent .stat-value { color: var(--accent); }
@@ -67,6 +82,11 @@
 
 .panel h2, .panel h3 {
   color: #d6deeb;
+}
+
+.panel h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
 }
 
 .span-2 {
@@ -134,6 +154,12 @@ small.error {
   font-size: 0.85rem;
 }
 
+/* Spacing for monthly equivalents toggle */
+.panel summary {
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
 .breakdown-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -145,4 +171,12 @@ small.error {
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .span-2 { grid-column: span 1; }
   .breakdown-grid { grid-template-columns: 1fr; }
+}
+.list li span { flex: 1 1 auto; }
+.list li strong {
+  flex: 0 0 14ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  white-space: nowrap;
 }

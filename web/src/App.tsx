@@ -59,9 +59,10 @@ function App() {
         <div className="stat-card">
           <div className="stat-label">Gross income</div>
           <div className="stat-value">{formatGBP(grossPence)}</div>
+          <div className="stat-sub">&nbsp;</div>
         </div>
         <div className="stat-card accent">
-          <div className="stat-label">Tax + NI</div>
+          <div className="stat-label">Total Deductions</div>
           <div className="stat-value">{formatGBP(result.totals.taxAndNI)}</div>
           <div className="stat-sub">Effective tax rate {Math.round(effTaxRate * 1000) / 10}%</div>
         </div>
@@ -73,6 +74,7 @@ function App() {
         <div className="stat-card">
           <div className="stat-label">Student loan</div>
           <div className="stat-value">{formatGBP(result.studentLoan.amount)}</div>
+          <div className="stat-sub">&nbsp;</div>
         </div>
       </div>
       <div className="grid">
@@ -110,42 +112,60 @@ function App() {
           {!isValid && <div className="notice">Some inputs are invalid; calculations use 0 for invalid fields.</div>}
           <ul className="list">
             <li>
-              <span>Income tax (incl. dividends)</span>
-              <strong>{formatGBP(result.totals.taxOnly)}</strong>
+              <span>Income Tax</span>
+              <strong>{formatGBP(result.incomeTax.total)}</strong>
             </li>
             <li>
               <span>National Insurance</span>
               <strong>{formatGBP(result.nationalInsurance.total)}</strong>
             </li>
             <li>
-              <span>Student loan</span>
+              <span>Dividend Tax</span>
+              <strong>{formatGBP(result.dividendTax.total)}</strong>
+            </li>
+            <li>
+              <span>Student Loan</span>
               <strong>{formatGBP(result.studentLoan.amount)}</strong>
             </li>
             <li className="total">
-              <span>Total tax + NI</span>
-              <strong>{formatGBP(result.totals.taxAndNI)}</strong>
+              <span>Total Deductions</span>
+              <strong>{formatGBP(result.incomeTax.total + result.dividendTax.total + result.nationalInsurance.total + result.studentLoan.amount)}</strong>
             </li>
             <li className="total">
               <span>Net income</span>
               <strong>{formatGBP(result.totals.netIncome)}</strong>
             </li>
           </ul>
-          <h3>Monthly equivalents</h3>
-          <ul className="list">
-            <li>
-              <span>Income tax (incl. dividends)</span>
-              <strong>{formatGBP(result.totals.monthly.taxOnly)}</strong>
-            </li>
-            <li>
-              <span>Total tax + NI</span>
-              <strong>{formatGBP(result.totals.monthly.taxAndNI)}</strong>
-            </li>
-            <li>
-              <span>Net income</span>
-              <strong>{formatGBP(result.totals.monthly.netIncome)}</strong>
-            </li>
-          </ul>
-          <p className="footnote">Note: Monthly is annual ÷ 12 (not PAYE-period exact).</p>
+          <details>
+            <summary>Show monthly equivalents</summary>
+            <ul className="list">
+              <li>
+                <span>Income Tax</span>
+                <strong>{formatGBP((result.incomeTax.total / 12) | 0)}</strong>
+              </li>
+              <li>
+                <span>National Insurance</span>
+                <strong>{formatGBP((result.nationalInsurance.total / 12) | 0)}</strong>
+              </li>
+              <li>
+                <span>Dividend Tax</span>
+                <strong>{formatGBP((result.dividendTax.total / 12) | 0)}</strong>
+              </li>
+              <li>
+                <span>Student Loan</span>
+                <strong>{formatGBP((result.studentLoan.amount / 12) | 0)}</strong>
+              </li>
+              <li className="total">
+                <span>Total Deductions</span>
+                <strong>{formatGBP(((result.incomeTax.total + result.dividendTax.total + result.nationalInsurance.total + result.studentLoan.amount) / 12) | 0)}</strong>
+              </li>
+              <li className="total">
+                <span>Net income</span>
+                <strong>{formatGBP(result.totals.monthly.netIncome)}</strong>
+              </li>
+            </ul>
+            <p className="footnote">Note: Monthly is annual ÷ 12 (not PAYE-period exact).</p>
+          </details>
         </section>
 
         <section className="panel span-2">
